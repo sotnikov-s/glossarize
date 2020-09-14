@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+    postgres:
+        image: postgres:11-alpine
+        restart: on-failure
+        environment:
+          POSTGRES_USER: bruice
+          POSTGRES_PASSWORD: almighty_
+        volumes: 
+            - ./db-volume:/var/lib/postgresql/data
+        ports:
+          - "5432:5432"
+    
+    migration:
+        image: glossarize/migration
+        environment:
+            DB_USER: bruice
+            DB_PASSWORD: almighty_
+            DB_URL: postgres/postgres?sslmode=disable
+        depends_on:
+            - postgres
